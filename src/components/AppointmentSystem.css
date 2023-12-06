@@ -1,0 +1,68 @@
+/* Agrega estilos a tu archivo 'AppointmentSystem.css' */
+
+.appointment-system {
+  font-family: "Arial", sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-system h1 {
+  text-align: center;
+  color: #333;
+}
+
+.appointment-form {
+  margin-bottom: 20px;
+}
+
+.appointment-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.appointment-form input,
+.appointment-form select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.appointment-form button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.appointment-form button:hover {
+  background-color: #45a049;
+}
+
+.appointment-list {
+  text-align: center;
+}
+
+.appointment-list h2 {
+  color: #333;
+}
+
+.appointment-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.appointment-list li {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
