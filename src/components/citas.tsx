@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './AppointmentSystem.css';
 
 interface Appointment {
-  id: number;
   date: string;
   time: string;
   customerName: string;
@@ -19,7 +18,6 @@ const serviceTimes: { [key: string]: number } = {
 const AppointmentSystem: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [newAppointment, setNewAppointment] = useState<Appointment>({
-    id: 0,
     date: '',
     time: '',
     customerName: '',
@@ -28,7 +26,6 @@ const AppointmentSystem: React.FC = () => {
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
 
   const isTimeSlotAvailable = (selectedTime: string): boolean => {
-    const selectedDate = newAppointment.date;
     const availableSlots: string[] = [];
 
     // Lógica para verificar la disponibilidad y actualizar availableSlots
@@ -55,20 +52,39 @@ const AppointmentSystem: React.FC = () => {
     }));
   };
 
-  const handleAddAppointment = () => {
-    if (isTimeSlotAvailable(newAppointment.time)) {
-      setAppointments((prevAppointments) => [...prevAppointments, newAppointment]);
-      setNewAppointment({
-        id: newAppointment.id + 1,
-        date: '',
-        time: '',
-        customerName: '',
-        serviceType: '',
-      });
-      setAvailableTimeSlots([]); // Limpiar las horas disponibles después de agregar una cita
-    } else {
-      alert('La hora seleccionada no esta disponible, favor de cambiarlo');
-    }
+  const handleAddAppointment = async () => {
+    if (
+      newAppointment.date &&
+      newAppointment.time &&
+      newAppointment.customerName &&
+      newAppointment.serviceType
+    )
+      if (isTimeSlotAvailable(newAppointment.time)) {
+        try {
+          // Enviar la nueva cita al servidor
+
+          alert('Cita agregada');
+          setAppointments((prevAppointments) => [...prevAppointments, newAppointment]);
+          setNewAppointment({
+            date: '',
+            time: '',
+            customerName: '',
+            serviceType: '',
+          });
+          await fetch('http://localhost:3001/citaas', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newAppointment),
+          });
+          // Limpiar las horas disponibles después de agregar una cita
+        } catch (error) {
+          console.error('Error al agregar la cita:', error);
+        }
+      } else {
+        alert('La hora seleccionada no esta disponible, favor de cambiarlo');
+      }
   };
 
   return (
@@ -119,20 +135,14 @@ const AppointmentSystem: React.FC = () => {
           <option value="Pintado de unas">Pintado de unas (2 horas aprox.)</option>
         </select>
         <br></br><br></br>
-        <button onClick={handleAddAppointment}>Agergar cita</button>
+        <button onClick={handleAddAppointment}>Agregar cita</button>
       </div>
-      <div className="appointment-list">
-        <h2>Citas registradas</h2>
-        <ul>
-          {appointments.map((appointment) => (
-            <li key={appointment.id}>
-              {`${appointment.date} at ${appointment.time} - ${appointment.customerName} (${appointment.serviceType})`}
-            </li>
-          ))}
-        </ul>
-      </div>
+
     </div>
+
   );
 };
 
 export default AppointmentSystem;
+
+
